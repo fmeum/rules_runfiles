@@ -1,0 +1,13 @@
+module(
+    name = "fmeum_rules_runfiles",
+    version = "0.0.1",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.0.3")
+
+bazel_dep(name = "other_module", version = "0.0.1", repo_name = "mapped_module_name")
+local_path_override(
+    module_name = "other_module",
+    path = "tests/other_module",
+)

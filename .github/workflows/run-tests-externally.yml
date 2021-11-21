@@ -1,0 +1,60 @@
+name: Test externally
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'
+
+  workflow_dispatch:
+
+jobs:
+
+  test_externally:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        bazel: [4.0.0, latest, rolling]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            cache: "/home/runner/.cache/bazel-disk"
+          - os: macos-latest
+            cache: "/private/var/tmp/bazel-disk"
+          - os: windows-latest
+            cache: "C:\\tmp\\bazel-disk"
+          - bazel: rolling
+            bazel_extra_args: "--config=bzlmod"
+    name: Test externally (${{ matrix.os }}, Bazel ${{ matrix.bazel }})
+    env:
+      BAZELISK_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.jdk }}
+
+      - name: Mount Bazel disk cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ matrix.cache }}
+          key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.jdk }}
+
+      - name: Run tests externally
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+        working-directory: ./tests
+        run: bazelisk test --disk_cache=${{ matrix.cache }} ${{ matrix.bazel_extra_args }} //...
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: testlogs-${{ matrix.bazel}}-${{ matrix.os }}-${{ matrix.jdk }}
+          # https://github.com/actions/upload-artifact/issues/92#issuecomment-711107236
+          path: ${{ github.workspace }}/tests/bazel-testlogs*/**/test.log

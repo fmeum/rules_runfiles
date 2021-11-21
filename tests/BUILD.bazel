@@ -1,0 +1,35 @@
+load("//runfiles/internal:cc_runfiles.bzl", "cc_runfiles")
+
+filegroup(
+    name = "filegroup_same_module",
+    srcs = [
+        "foo/bar/b.txt",
+    ],
+)
+
+filegroup(
+    name = "filegroup_other_module",
+    srcs = [
+        "@mapped_module_name//tests:foo/bar/b.txt",
+    ],
+)
+
+cc_runfiles(
+    name = "simple_test_runfiles",
+    data = [
+        "foo/a.txt",
+        "foo/bar",
+        "foo/bar/b.txt",
+        ":filegroup_other_module",
+        ":filegroup_same_module",
+        "@mapped_module_name//tests:foo/a.txt",
+        "@mapped_module_name//tests:foo/bar",
+        "@mapped_module_name//tests:foo/bar/b.txt",
+    ],
+)
+
+cc_test(
+    name = "simple_test",
+    srcs = ["simple_test.cc"],
+    deps = [":simple_test_runfiles"],
+)
