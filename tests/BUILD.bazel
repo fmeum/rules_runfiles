@@ -41,6 +41,6 @@ cc_runfiles(
 
 cc_test(
     name = "simple_test",
-    srcs = ["simple_test.cc"],
+    srcs = ["simple_test.cpp"],
     deps = [":simple_test_runfiles"],
 )

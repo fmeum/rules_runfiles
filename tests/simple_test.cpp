@@ -1,10 +1,24 @@
-#include <iostream>
+// Copyright 2021 Fabian Meumertzheim
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
-#include "tools/cpp/runfiles/runfiles.h"
 #include "tests/simple_test_runfiles.h"
+#include "tools/cpp/runfiles/runfiles.h"
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
@@ -23,7 +37,8 @@ std::vector<std::string> testcases = {
     ::runfile::custom_repo_name::tests::data_foo_bar_b_txt,
 };
 
-bool assert_valid_runfile(Runfiles* runfiles, const std::string& rlocation_path) {
+bool assert_valid_runfile(Runfiles* runfiles,
+                          const std::string& rlocation_path) {
   std::string path = runfiles->Rlocation(rlocation_path);
   if (path.empty()) {
     std::cerr << "failed to look up runfile: " << rlocation_path << std::endl;
@@ -31,7 +46,8 @@ bool assert_valid_runfile(Runfiles* runfiles, const std::string& rlocation_path)
   }
   std::ifstream file(path);
   if (!file.good()) {
-    std::cerr << "runfile " << rlocation_path << " does not exist at: " << path << std::endl;
+    std::cerr << "runfile " << rlocation_path << " does not exist at: " << path
+              << std::endl;
     return false;
   }
   return true;
@@ -52,7 +68,7 @@ int run_tests(Runfiles* runfiles) {
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   std::string runfiles_error;
   Runfiles* runfiles = Runfiles::CreateForTest(&runfiles_error);
   if (runfiles == nullptr) {
