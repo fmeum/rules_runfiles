@@ -1,0 +1,5 @@
+exports_files([
+    "data/foo/a.txt",
+    "data/foo/bar",
+    "data/foo/bar/b.txt",
+])

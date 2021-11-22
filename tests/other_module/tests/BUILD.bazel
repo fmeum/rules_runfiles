@@ -1,5 +1,0 @@
-exports_files([
-    "foo/a.txt",
-    "foo/bar",
-    "foo/bar/b.txt",
-])
