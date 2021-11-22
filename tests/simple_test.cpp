@@ -35,6 +35,7 @@ std::vector<std::string> testcases = {
     ::runfiles::custom_repo_name::tests::data_foo_a_txt,
     ::runfiles::custom_repo_name::tests::data_foo_bar,
     ::runfiles::custom_repo_name::tests::data_foo_bar_b_txt,
+    ::runfiles::main::BUILD_bazel,
 };
 
 bool assert_valid_runfile(Runfiles* runfiles,

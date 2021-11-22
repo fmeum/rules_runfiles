@@ -30,6 +30,7 @@ cc_runfiles(
         "//tests:data/foo/a.txt",
         "//tests:data/foo/bar",
         "//tests:data/foo/bar/b.txt",
+        "@//:BUILD.bazel",
         "@custom_module_name//tests:data/foo/a.txt",
         "@custom_module_name//tests:data/foo/bar",
         "@custom_module_name//tests:data/foo/bar/b.txt",
