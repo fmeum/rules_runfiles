@@ -93,7 +93,6 @@ _cc_runfiles = rule(
     },
     fragments = ["cpp"],
     incompatible_use_toolchain_transition = True,
-    output_to_genfiles = True,
     provides = [CcInfo],
     toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
 )
