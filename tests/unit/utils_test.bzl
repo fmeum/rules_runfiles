@@ -3,6 +3,9 @@ load("//runfiles/internal:common.bzl", "parse_label", "escape")
 
 escape_TESTCASES = {
     "foo": "foo",
+    "1.txt": "_1_txt",
+    "foo/1.txt": "foo_1_txt",
+    "foo/ .txt": "foo___txt",
 }
 
 def _escape_test_impl(ctx):
