@@ -1,5 +1,5 @@
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
-load("//runfiles/internal:utils.bzl", "parse_label", "escape")
+load("//runfiles/internal:common.bzl", "parse_label", "escape")
 
 escape_TESTCASES = {
     "foo": "foo",

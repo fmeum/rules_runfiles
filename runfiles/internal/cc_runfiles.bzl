@@ -1,6 +1,5 @@
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
-load(":rlocation_path.bzl", "rlocation_path")
-load(":utils.bzl", "escape", "merge_runfiles", "parse_label")
+load(":common.bzl", "runfile_struct", "merge_runfiles", "escape")
 
 DEFINITION_TEMPLATE = """
 {open_namespaces}
@@ -23,16 +22,6 @@ namespace runfile {{
 #endif
 """
 
-NO_FILES_MESSAGE = """target '{raw_label}' does not provide any files"""
-
-MORE_THAN_ONE_FILE_MESSAGE = """target '{raw_label}' provides more than one file:
-
-  {files}
-
-Either use an existing more fine-grained target or use a rule such as
-bazel-skylib's select_file to extract a single file from this target.
-"""
-
 def _uid_from_label(label):
     return str(hash(str(label))).replace("-", "M")
 
@@ -44,26 +33,7 @@ def _cc_runfiles_impl(ctx):
     for i in range(len(ctx.attr.data)):
         target = ctx.attr.data[i]
         raw_label = ctx.attr.raw_labels[i]
-        files = target[DefaultInfo].files.to_list()
-        if len(files) == 0:
-            fail(NO_FILES_MESSAGE.format(
-                raw_label = raw_label,
-            ))
-        if len(files) > 1:
-            fail(MORE_THAN_ONE_FILE_MESSAGE.format(
-                raw_label = raw_label,
-                files = "\n  ".join([rlocation_path(ctx, file) for file in files]),
-            ))
-        file = files[0]
-        parsed_label = parse_label(raw_label, "current", ctx.label.package)
-        runfiles.append(struct(
-            name = parsed_label.name,
-            pkg = parsed_label.pkg,
-            raw_label = raw_label,
-            repo = parsed_label.repo if parsed_label.repo else "main",
-            rlocation_path = rlocation_path(ctx, file),
-            target = target.label,
-        ))
+        runfiles.append(runfile_struct(ctx, target, raw_label))
 
     definitions = [
         DEFINITION_TEMPLATE.format(
