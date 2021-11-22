@@ -23,18 +23,18 @@
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
 std::vector<std::string> testcases = {
-    ::runfile::current::tests::data_foo_a_txt,
-    ::runfile::current::tests::data_foo_bar,
-    ::runfile::current::tests::data_foo_bar_b_txt,
-    ::runfile::current::tests::filegroup_other_module,
-    ::runfile::current::tests::filegroup_other_repo,
-    ::runfile::current::tests::filegroup_same_module,
-    ::runfile::custom_module_name::tests::data_foo_a_txt,
-    ::runfile::custom_module_name::tests::data_foo_bar,
-    ::runfile::custom_module_name::tests::data_foo_bar_b_txt,
-    ::runfile::custom_repo_name::tests::data_foo_a_txt,
-    ::runfile::custom_repo_name::tests::data_foo_bar,
-    ::runfile::custom_repo_name::tests::data_foo_bar_b_txt,
+    ::runfiles::current::tests::data_foo_a_txt,
+    ::runfiles::current::tests::data_foo_bar,
+    ::runfiles::current::tests::data_foo_bar_b_txt,
+    ::runfiles::current::tests::filegroup_other_module,
+    ::runfiles::current::tests::filegroup_other_repo,
+    ::runfiles::current::tests::filegroup_same_module,
+    ::runfiles::custom_module_name::tests::data_foo_a_txt,
+    ::runfiles::custom_module_name::tests::data_foo_bar,
+    ::runfiles::custom_module_name::tests::data_foo_bar_b_txt,
+    ::runfiles::custom_repo_name::tests::data_foo_a_txt,
+    ::runfiles::custom_repo_name::tests::data_foo_bar,
+    ::runfiles::custom_repo_name::tests::data_foo_bar_b_txt,
 };
 
 bool assert_valid_runfile(Runfiles* runfiles,
