@@ -1,9 +1,11 @@
-# C++ & Java
-find -name '*.c' \
-     -o -name '*.cpp' \
-     -o -name '*.h' \
-     -o -name '*.java' \
-  | xargs clang-format-12 -i
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+# C++
+find -name '*.cpp' -o -name '*.h' | xargs clang-format-13 -i
+
+test --noincompatible_strict_action_env
 
 # BUILD files
 # go get github.com/bazelbuild/buildtools/buildifier
@@ -11,4 +13,4 @@ buildifier -r .
 
 # Licence headers
 # go get -u github.com/google/addlicense
-addlicense -c "Fabian Meumertzheim" runfiles/ tests/
+addlicense -c "Fabian Meumertzheim" bzlmod/ runfiles/ tests/

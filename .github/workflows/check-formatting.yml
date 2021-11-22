@@ -19,14 +19,14 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v2
         with:
-          go-version: '^1.15.5'
+          go-version: '^1.17.3'
 
       - name: Install formatters
         run: |
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get install software-properties-common
-          sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main'
-          sudo apt-get install clang-format-12
+          sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main'
+          sudo apt-get install clang-format-13
           go get -u github.com/google/addlicense
           go get github.com/bazelbuild/buildtools/buildifier
 
