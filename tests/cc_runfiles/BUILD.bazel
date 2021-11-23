@@ -43,5 +43,8 @@ cc_runfiles(
 cc_test(
     name = "cc_runfiles_test",
     srcs = ["cc_runfiles_test.cpp"],
-    deps = [":cc_runfiles_test_runfiles"],
+    deps = [
+        ":cc_runfiles_test_runfiles",
+        "@bazel_tools//tools/cpp/runfiles",
+    ],
 )
