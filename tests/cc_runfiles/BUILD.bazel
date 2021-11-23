@@ -1,4 +1,4 @@
-load("//runfiles/internal:cc_runfiles.bzl", "cc_runfiles")
+load("//runfiles:defs.bzl", "cc_runfiles")
 
 filegroup(
     name = "filegroup_same_module",
