@@ -17,24 +17,24 @@
 #include <string>
 #include <vector>
 
-#include "tests/cc_runfiles/cc_runfiles_test_runfiles.h"
+#include "cc_runfiles/cc_runfiles_test_runfiles.h"
 #include "tools/cpp/runfiles/runfiles.h"
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
 std::vector<std::string> testcases = {
-    ::runfiles::current::tests::data_foo_a_txt,
-    ::runfiles::current::tests::data_foo_bar,
-    ::runfiles::current::tests::data_foo_bar_b_txt,
-    ::runfiles::current::tests::cc_runfiles::filegroup_other_module,
-    ::runfiles::current::tests::cc_runfiles::filegroup_other_repo,
-    ::runfiles::current::tests::cc_runfiles::filegroup_same_module,
-    ::runfiles::custom_module_name::tests::data_foo_a_txt,
-    ::runfiles::custom_module_name::tests::data_foo_bar,
-    ::runfiles::custom_module_name::tests::data_foo_bar_b_txt,
-    ::runfiles::custom_repo_name::tests::data_foo_a_txt,
-    ::runfiles::custom_repo_name::tests::data_foo_bar,
-    ::runfiles::custom_repo_name::tests::data_foo_bar_b_txt,
+    ::runfiles::current::data::foo::a_txt,
+    ::runfiles::current::data::foo::bar,
+    ::runfiles::current::data::foo::bar_b_txt,
+    ::runfiles::current::cc_runfiles::filegroup_other_module,
+    ::runfiles::current::cc_runfiles::filegroup_other_repo,
+    ::runfiles::current::cc_runfiles::filegroup_same_module,
+    ::runfiles::custom_module_name::data::foo::a_txt,
+    ::runfiles::custom_module_name::data::foo::bar,
+    ::runfiles::custom_module_name::data::foo::bar_b_txt,
+    ::runfiles::custom_repo_name::data::foo::a_txt,
+    ::runfiles::custom_repo_name::data::foo::bar,
+    ::runfiles::custom_repo_name::data::foo::bar_b_txt,
     ::runfiles::main::BUILD_bazel,
 };
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
-load("//runfiles/internal:common.bzl", "escape", "parse_label")
+load("@rules_runfiles//runfiles/internal:common.bzl", "escape", "parse_label")
 
 escape_TESTCASES = {
     "foo": "foo",
