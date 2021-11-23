@@ -61,7 +61,7 @@ def _parse_label_test_impl(ctx):
 
 parse_label_test = unittest.make(_parse_label_test_impl)
 
-def utils_test_suite(name):
+def common_test_suite(name):
     unittest.suite(
         name,
         escape_test,

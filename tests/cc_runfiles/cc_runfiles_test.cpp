@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-#include "tests/simple_test_runfiles.h"
+#include "tests/cc_runfiles/cc_runfiles_test_runfiles.h"
 #include "tools/cpp/runfiles/runfiles.h"
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
@@ -26,9 +26,9 @@ std::vector<std::string> testcases = {
     ::runfiles::current::tests::data_foo_a_txt,
     ::runfiles::current::tests::data_foo_bar,
     ::runfiles::current::tests::data_foo_bar_b_txt,
-    ::runfiles::current::tests::filegroup_other_module,
-    ::runfiles::current::tests::filegroup_other_repo,
-    ::runfiles::current::tests::filegroup_same_module,
+    ::runfiles::current::tests::cc_runfiles::filegroup_other_module,
+    ::runfiles::current::tests::cc_runfiles::filegroup_other_repo,
+    ::runfiles::current::tests::cc_runfiles::filegroup_same_module,
     ::runfiles::custom_module_name::tests::data_foo_a_txt,
     ::runfiles::custom_module_name::tests::data_foo_bar,
     ::runfiles::custom_module_name::tests::data_foo_bar_b_txt,
