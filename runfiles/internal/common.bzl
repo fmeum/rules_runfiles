@@ -60,7 +60,10 @@ def parse_label(label, current_repo, current_pkg):
         name = name,
     )
 
-def runfile_struct(ctx, target, raw_label):
+def runfile_structs(ctx, targets, raw_labels):
+    return [_runfile_struct(ctx, target, raw_label) for target, raw_label in zip(targets, raw_labels)]
+
+def _runfile_struct(ctx, target, raw_label):
     files = target[DefaultInfo].files.to_list()
     if len(files) == 0:
         fail(NO_FILES_MESSAGE.format(

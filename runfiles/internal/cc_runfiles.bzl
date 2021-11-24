@@ -13,7 +13,7 @@
 # limitations under the License.
 
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
-load(":common.bzl", "escape", "merge_runfiles", "runfile_struct")
+load(":common.bzl", "escape", "merge_runfiles", "runfile_structs")
 
 DEFINITION_TEMPLATE = """
 {open_namespaces}
@@ -37,11 +37,7 @@ namespace runfiles {{
 """
 
 def _cc_runfiles_impl(ctx):
-    runfiles = []
-    for i in range(len(ctx.attr.data)):
-        target = ctx.attr.data[i]
-        raw_label = ctx.attr.raw_labels[i]
-        runfiles.append(runfile_struct(ctx, target, raw_label))
+    runfiles = runfile_structs(ctx, ctx.attr.data, ctx.attr.raw_labels)
 
     definitions = [
         DEFINITION_TEMPLATE.format(
