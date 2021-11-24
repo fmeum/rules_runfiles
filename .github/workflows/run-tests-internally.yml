@@ -36,12 +36,12 @@ jobs:
       - name: Build internally
         env:
           USE_BAZEL_VERSION: "last_green"
-        run: bazelisk build --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @rules_runfiles_tests//...
+        run: bazelisk build --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
 
       - name: Test internally
         env:
           USE_BAZEL_VERSION: "last_green"
-        run: bazelisk test --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @rules_runfiles_tests//...
+        run: bazelisk test --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
 
       - name: Upload test logs
         if: always()

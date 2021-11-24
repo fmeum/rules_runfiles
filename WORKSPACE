@@ -1,7 +1,7 @@
-workspace(name = "rules_runfiles")
+workspace(name = "fmeum_rules_runfiles")
 
 local_repository(
-    name = "rules_runfiles_tests",
+    name = "fmeum_rules_runfiles_tests",
     path = "tests",
 )
 

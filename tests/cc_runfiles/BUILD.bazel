@@ -1,4 +1,4 @@
-load("@rules_runfiles//runfiles:defs.bzl", "cc_runfiles")
+load("@fmeum_rules_runfiles//runfiles:defs.bzl", "cc_runfiles")
 
 filegroup(
     name = "filegroup_same_module",

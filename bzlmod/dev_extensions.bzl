@@ -17,12 +17,16 @@ load(":local_repository.bzl", "starlarkified_local_repository")
 
 def _install_dev_dependencies(ctx):
     starlarkified_local_repository(
-        name = "custom_repo_name",
-        path = "tests/data/other_repo",
+        name = "fmeum_rules_runfiles_tests",
+        path = "tests",
     )
     starlarkified_local_repository(
-        name = "custom_module_name",
+        name = "other_module",
         path = "tests/data/other_module",
+    )
+    starlarkified_local_repository(
+        name = "other_repo",
+        path = "tests/data/other_repo",
     )
 
 install_dev_dependencies = module_extension(

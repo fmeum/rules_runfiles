@@ -4,6 +4,8 @@ module(
     compatibility_level = 1,
 )
 
+bazel_dep(name = "bazel_skylib", version = "1.0.3", dev_dependency = True)
+
 install_dev_dependencies = use_extension(
     "@fmeum_rules_runfiles//bzlmod:dev_extensions.bzl",
     "install_dev_dependencies",
@@ -11,5 +13,7 @@ install_dev_dependencies = use_extension(
 )
 use_repo(
     install_dev_dependencies,
+    "fmeum_rules_runfiles_tests",
+    custom_module_name = "other_module",
     custom_repo_name = "other_repo",
 )
