@@ -4,14 +4,6 @@ module(
     compatibility_level = 1,
 )
 
-bazel_dep(name = "bazel_skylib", version = "1.0.3")
-
-bazel_dep(name = "other_module", version = "0.0.1", repo_name = "custom_module_name")
-local_path_override(
-    module_name = "other_module",
-    path = "tests/data/other_module",
-)
-
 install_dev_dependencies = use_extension(
     "@fmeum_rules_runfiles//bzlmod:dev_extensions.bzl",
     "install_dev_dependencies",

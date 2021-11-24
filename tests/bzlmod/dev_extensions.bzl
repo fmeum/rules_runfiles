@@ -17,12 +17,8 @@ load(":local_repository.bzl", "starlarkified_local_repository")
 
 def _install_dev_dependencies(ctx):
     starlarkified_local_repository(
-        name = "custom_repo_name",
-        path = "tests/data/other_repo",
-    )
-    starlarkified_local_repository(
-        name = "custom_module_name",
-        path = "tests/data/other_module",
+        name = "other_repo",
+        path = "data/other_repo",
     )
 
 install_dev_dependencies = module_extension(

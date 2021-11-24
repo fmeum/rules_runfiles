@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
-load(":local_repository.bzl", "starlarkified_local_repository")
+def _starlarkified_local_repository_impl(repository_ctx):
+    relative_path = repository_ctx.attr.path
+    workspace_root = repository_ctx.path(Label("@//:BUILD.bazel")).dirname
+    absolute_path = workspace_root
+    for segment in relative_path.split("/"):
+        absolute_path = absolute_path.get_child(segment)
+    repository_ctx.symlink(absolute_path, ".")
 
-def _install_dev_dependencies(ctx):
-    starlarkified_local_repository(
-        name = "custom_repo_name",
-        path = "tests/data/other_repo",
-    )
-    starlarkified_local_repository(
-        name = "custom_module_name",
-        path = "tests/data/other_module",
-    )
-
-install_dev_dependencies = module_extension(
-    implementation = _install_dev_dependencies,
+starlarkified_local_repository = repository_rule(
+    implementation = _starlarkified_local_repository_impl,
+    attrs = {
+        "path": attr.string(mandatory = True),
+    },
+    local = True,
 )
