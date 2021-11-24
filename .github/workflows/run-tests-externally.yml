@@ -24,7 +24,7 @@ jobs:
             cache: "/private/var/tmp/bazel-disk"
           - os: windows-latest
             cache: "C:\\tmp\\bazel-disk"
-          - bazel_mode: workspace
+          - bazel_mode: module
             bazel_extra_args: "--config=bzlmod"
         exclude:
           - bazel: 2.0.0
