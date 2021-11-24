@@ -36,12 +36,6 @@ namespace runfiles {{
 #endif
 """
 
-def _uid_from_label(label):
-    return str(hash(str(label))).replace("-", "M")
-
-def _namespace_for_runfile(runfile):
-    return [runfile.repo] + runfile.pkg.split("/")
-
 def _cc_runfiles_impl(ctx):
     runfiles = []
     for i in range(len(ctx.attr.data)):
@@ -51,8 +45,8 @@ def _cc_runfiles_impl(ctx):
 
     definitions = [
         DEFINITION_TEMPLATE.format(
-            open_namespaces = "\n".join(["namespace %s {" % namespace for namespace in _namespace_for_runfile(runfile)]),
-            close_namespaces = "\n".join(["} // %s" % namespace for namespace in _namespace_for_runfile(runfile)]),
+            open_namespaces = "\n".join(["namespace %s {" % namespace for namespace in _namespace_segments(runfile)]),
+            close_namespaces = "\n".join(["} // %s" % namespace for namespace in _namespace_segments(runfile)]),
             escaped_name = escape(runfile.name),
             raw_label = runfile.raw_label,
             rlocation_path = runfile.rlocation_path,
@@ -65,7 +59,7 @@ def _cc_runfiles_impl(ctx):
     header = ctx.actions.declare_file(header_name)
     ctx.actions.write(header, HEADER_TEMPLATE.format(
         content = "".join(definitions),
-        uid = _uid_from_label(ctx.label),
+        uid = _label_uid(ctx.label),
     ))
 
     cc_toolchain = find_cpp_toolchain(ctx)
@@ -110,3 +104,9 @@ def cc_runfiles(name, data, **kwargs):
         raw_labels = data,
         *kwargs
     )
+
+def _label_uid(label):
+    return str(hash(str(label))).replace("-", "M")
+
+def _namespace_segments(runfile):
+    return [runfile.repo] + runfile.pkg.split("/")
