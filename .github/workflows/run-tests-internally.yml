@@ -1,4 +1,4 @@
-name: Build and test internally
+name: Test internally
 
 on:
   push:
@@ -12,19 +12,20 @@ on:
 
 jobs:
 
-  build_and_test_internally:
+  test_internally:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        bazel_mode: [workspace, module]
+        include:
+          - bazel_mode: module
+            bazel_extra_args: "--config=bzlmod"
     env:
       BAZELISK_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    name: Build and test internally (ubuntu-latest, Bazel latest, JDK 17)
+    name: Build and test internally (ubuntu-latest, Bazel last_green ${{ matrix.bazel_mode }})
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
 
       - name: Mount Bazel disk cache
         uses: actions/cache@v2
@@ -32,15 +33,15 @@ jobs:
           path: "/home/runner/.cache/bazel-disk"
           key: bazel-disk-cache-internal
 
-      - name: Build from main workspace with layering_check
+      - name: Build internally
         env:
-          USE_BAZEL_VERSION: "rolling"
-        run: bazelisk build --config=layering_check --config=bzlmod --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
+          USE_BAZEL_VERSION: "last_green"
+        run: bazelisk build --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
 
-      - name: Run tests from main workspace
+      - name: Test internally
         env:
-          USE_BAZEL_VERSION: "rolling"
-        run: bazelisk test --config=layering_check --config=bzlmod --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
+          USE_BAZEL_VERSION: "last_green"
+        run: bazelisk test --config=layering_check ${{ matrix.bazel_extra_args }} --disk_cache="/home/runner/.cache/bazel-disk" //... @fmeum_rules_runfiles_tests//...
 
       - name: Upload test logs
         if: always()

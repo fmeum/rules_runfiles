@@ -5,8 +5,6 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  schedule:
-    - cron: '0 0 * * *'
 
   workflow_dispatch:
 
@@ -16,8 +14,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        bazel: [4.0.0, latest, rolling]
+        bazel: [2.0.0, latest, last_green]
         os: [ubuntu-latest, macos-latest, windows-latest]
+        bazel_mode: [workspace, module]
         include:
           - os: ubuntu-latest
             cache: "/home/runner/.cache/bazel-disk"
@@ -25,25 +24,31 @@ jobs:
             cache: "/private/var/tmp/bazel-disk"
           - os: windows-latest
             cache: "C:\\tmp\\bazel-disk"
-          - bazel: rolling
+          - bazel_mode: workspace
             bazel_extra_args: "--config=bzlmod"
-    name: Test externally (${{ matrix.os }}, Bazel ${{ matrix.bazel }})
+        exclude:
+          - bazel: 2.0.0
+            bazel_mode: module
+          - bazel: latest
+            bazel_mode: module
+    name: Test externally (${{ matrix.os }}, Bazel ${{ matrix.bazel }} ${{ matrix.bazel_mode }})
     env:
       BAZELISK_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.jdk }}
-
       - name: Mount Bazel disk cache
         uses: actions/cache@v2
         with:
           path: ${{ matrix.cache }}
-          key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.jdk }}
+          key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.bazel_mode }}
+
+      - name: Build externally
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+        working-directory: ./tests
+        run: bazelisk build --disk_cache=${{ matrix.cache }} ${{ matrix.bazel_extra_args }} //...
 
       - name: Run tests externally
         env:
@@ -55,6 +60,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: testlogs-${{ matrix.bazel}}-${{ matrix.os }}-${{ matrix.jdk }}
+          name: testlogs-${{ matrix.bazel}}-${{ matrix.os }}-${{ matrix.bazel_mode }}
           # https://github.com/actions/upload-artifact/issues/92#issuecomment-711107236
           path: ${{ github.workspace }}/tests/bazel-testlogs*/**/test.log
