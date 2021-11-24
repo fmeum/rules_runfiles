@@ -1,10 +1,20 @@
-workspace(name = "fmeum_rules_runfiles")
+workspace(name = "rules_runfiles")
 
-#local_repository(
-#    name = "other_repo",
-#    path = "tests/other_repo",
-#)
-#
+local_repository(
+    name = "rules_runfiles_tests",
+    path = "tests",
+)
+
+local_repository(
+    name = "custom_module_name",
+    path = "tests/data/other_module",
+)
+
+local_repository(
+    name = "custom_repo_name",
+    path = "tests/data/other_repo",
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
