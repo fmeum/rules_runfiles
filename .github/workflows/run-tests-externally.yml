@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        bazel: [2.2.0, latest, last_green]
+        bazel: [3.0.0, latest, last_green]
         os: [ubuntu-latest, macos-latest, windows-latest]
         bazel_mode: [workspace, module]
         include:
@@ -27,7 +27,7 @@ jobs:
           - bazel_mode: module
             bazel_extra_args: "--config=bzlmod"
         exclude:
-          - bazel: 2.2.0
+          - bazel: 3.0.0
             bazel_mode: module
           - bazel: latest
             bazel_mode: module
