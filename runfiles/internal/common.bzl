@@ -79,7 +79,7 @@ def runfile_struct(ctx, target, raw_label):
         raw_label = raw_label,
         repo = parsed_label.repo if parsed_label.repo else "main",
         rlocation_path = rlocation_path(ctx, file),
-        target = target.label,
+        remapped_label = target.label,
     )
 
 def _escape_char(c):

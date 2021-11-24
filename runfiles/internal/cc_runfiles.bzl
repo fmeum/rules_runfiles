@@ -18,8 +18,8 @@ load(":common.bzl", "escape", "merge_runfiles", "runfile_struct")
 DEFINITION_TEMPLATE = """
 {open_namespaces}
 /*
- * Target: {target}
- * Label : {raw_label}
+ * Original label: {raw_label}
+ * Remapped label: {remapped_label}
  */
 const char* {escaped_name} = "{rlocation_path}";
 {close_namespaces}
@@ -49,8 +49,8 @@ def _cc_runfiles_impl(ctx):
             close_namespaces = "\n".join(["} // %s" % namespace for namespace in _namespace_segments(runfile)]),
             escaped_name = escape(runfile.name),
             raw_label = runfile.raw_label,
+            remapped_label = runfile.remapped_label,
             rlocation_path = runfile.rlocation_path,
-            target = runfile.target,
         )
         for runfile in runfiles
     ]
