@@ -89,7 +89,7 @@ def java_runfiles(name, data, **kwargs):
         name = name,
         data = data,
         raw_labels = data,
-        *kwargs
+        **kwargs
     )
 
 def _full_label_path(runfile):
