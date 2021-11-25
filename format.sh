@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-# C++
-find -name '*.cpp' -o -name '*.h' | xargs clang-format-13 -i
+# C++ & Java
+find -name '*.cpp' -o -name '*.h' -o -name '*.java' | xargs clang-format-13 -i
 
 test --noincompatible_strict_action_env
 
