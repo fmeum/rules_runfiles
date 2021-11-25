@@ -13,7 +13,26 @@
 # limitations under the License.
 
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
-load("@fmeum_rules_runfiles//runfiles/internal:common.bzl", "escape", "parse_label")
+load("@fmeum_rules_runfiles//runfiles/internal:common.bzl", "camel_case_identifier", "escape", "parse_label")
+
+_CAMEL_CASE_IDENTIFIER_TESTCASES = {
+    "snake_case": "SnakeCase",
+    "AlreadyCamelCase": "AlreadyCamelCase",
+    ".extended_snake&&case--with-dash-case-sneaked%1n": "ExtendedSnakeCaseWithDashCaseSneaked1n",
+    "_1234": "P1234",
+}
+
+def _camel_case_identifier_test_impl(ctx):
+    env = unittest.begin(ctx)
+    for s, expected in _CAMEL_CASE_IDENTIFIER_TESTCASES.items():
+        asserts.equals(
+            env,
+            expected = expected,
+            actual = camel_case_identifier(s),
+        )
+    return unittest.end(env)
+
+camel_case_identifier_test = unittest.make(_camel_case_identifier_test_impl)
 
 escape_TESTCASES = {
     "foo": "foo",
@@ -64,6 +83,7 @@ parse_label_test = unittest.make(_parse_label_test_impl)
 def common_test_suite(name):
     unittest.suite(
         name,
+        camel_case_identifier_test,
         escape_test,
         parse_label_test,
     )

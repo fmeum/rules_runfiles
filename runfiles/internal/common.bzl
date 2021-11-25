@@ -63,6 +63,13 @@ def parse_label(label, current_repo, current_pkg):
 def runfile_structs(ctx, targets, raw_labels):
     return [_runfile_struct(ctx, target, raw_label) for target, raw_label in zip(targets, raw_labels)]
 
+def camel_case_identifier(s):
+    escaped = escape(s)
+    identifier = "".join([part[0].upper() + part[1:] for part in escaped.split("_") if part != ""])
+    if identifier and not identifier[0].isdigit():
+        return identifier
+    return "P" + identifier
+
 def _runfile_struct(ctx, target, raw_label):
     files = target[DefaultInfo].files.to_list()
     if len(files) == 0:
