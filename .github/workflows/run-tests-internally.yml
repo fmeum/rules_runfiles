@@ -33,6 +33,10 @@ jobs:
           path: "/home/runner/.cache/bazel-disk"
           key: bazel-disk-cache-internal
 
+      - name: Clear WORKSPACE
+        if: ${{ matrix.bazel_mode }} == "module"
+        run: echo "" > WORKSPACE
+
       - name: Build internally
         env:
           USE_BAZEL_VERSION: "last_green"

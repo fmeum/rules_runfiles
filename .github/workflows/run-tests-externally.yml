@@ -44,6 +44,11 @@ jobs:
           path: ${{ matrix.cache }}
           key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.bazel_mode }}
 
+      - name: Clear WORKSPACE
+        if: ${{ matrix.bazel_mode }} == "module"
+        working-directory: ./tests
+        run: echo "" > WORKSPACE
+
       - name: Build externally
         env:
           USE_BAZEL_VERSION: ${{ matrix.bazel }}
