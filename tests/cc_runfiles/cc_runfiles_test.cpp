@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <sys/stat.h>
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -45,8 +47,9 @@ bool assert_valid_runfile(Runfiles* runfiles,
     std::cerr << "failed to look up runfile: " << rlocation_path << std::endl;
     return false;
   }
-  std::ifstream file(path);
-  if (!file.good()) {
+
+  struct stat info {};
+  if (stat(path.c_str(), &info) != 0) {
     std::cerr << "runfile " << rlocation_path << " does not exist at: " << path
               << std::endl;
     return false;
