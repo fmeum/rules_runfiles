@@ -40,7 +40,7 @@ public class JavaRunfilesTest {
 
   private static boolean assertValidRunfile(Runfiles runfiles, String rlocationPath) {
     String path = runfiles.rlocation(rlocationPath);
-    if (path.isEmpty()) {
+    if (path == null) {
       System.err.printf("failed to look up runfile: %s%n", rlocationPath);
       return false;
     }
