@@ -45,7 +45,7 @@ jobs:
           key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.bazel_mode }}
 
       - name: Clear WORKSPACE
-        if: ${{ matrix.bazel_mode }} == "module"
+        if: matrix.bazel_mode == 'module'
         working-directory: ./tests
         run: echo "" > WORKSPACE
 
