@@ -1,0 +1,20 @@
+filegroup(
+    name = "filegroup_same_module",
+    srcs = [
+        "//data/foo:bar/b.txt",
+    ],
+)
+
+filegroup(
+    name = "filegroup_other_module",
+    srcs = [
+        "@custom_module_name//data/foo:bar/b.txt",
+    ],
+)
+
+filegroup(
+    name = "filegroup_other_repo",
+    srcs = [
+        "@custom_repo_name//data/foo:bar/b.txt",
+    ],
+)

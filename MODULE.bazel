@@ -4,6 +4,7 @@ module(
     compatibility_level = 1,
 )
 
+bazel_dep(name = "platforms", version = "0.0.4", dev_dependency = True)
 bazel_dep(name = "bazel_skylib", version = "1.0.3", dev_dependency = True)
 
 install_dev_dependencies = use_extension(

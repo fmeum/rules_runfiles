@@ -1,43 +1,34 @@
 load("@fmeum_rules_runfiles//runfiles:cc_defs.bzl", "cc_runfiles")
+load("//data:constants.bzl", "COMMON_DATA")
 
 filegroup(
     name = "filegroup_same_module",
     srcs = [
-        "//data/foo:bar/b.txt",
+        "//data/foo:a.txt",
     ],
 )
 
 filegroup(
     name = "filegroup_other_module",
     srcs = [
-        "@custom_module_name//data/foo:bar/b.txt",
+        "@custom_module_name//data/foo:a.txt",
     ],
 )
 
 filegroup(
     name = "filegroup_other_repo",
     srcs = [
-        "@custom_repo_name//data/foo:bar/b.txt",
+        "@custom_repo_name//data/foo:a.txt",
     ],
 )
 
 cc_runfiles(
     name = "cc_runfiles_test_runfiles",
     data = [
+        "filegroup_other_repo",
         ":filegroup_other_module",
-        ":filegroup_other_repo",
         ":filegroup_same_module",
-        "//data/foo:a.txt",
-        "//data/foo:bar",
-        "//data/foo:bar/b.txt",
-        "@//:BUILD.bazel",
-        "@custom_module_name//data/foo:a.txt",
-        "@custom_module_name//data/foo:bar",
-        "@custom_module_name//data/foo:bar/b.txt",
-        "@custom_repo_name//data/foo:a.txt",
-        "@custom_repo_name//data/foo:bar",
-        "@custom_repo_name//data/foo:bar/b.txt",
-    ],
+    ] + COMMON_DATA,
 )
 
 cc_test(
