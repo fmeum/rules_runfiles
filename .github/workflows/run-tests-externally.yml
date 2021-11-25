@@ -60,6 +60,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: testlogs-${{ matrix.bazel}}-${{ matrix.os }}-${{ matrix.bazel_mode }}
+          name: testlogs-external-${{ matrix.bazel}}-${{ matrix.bazel_mode }}-${{ matrix.os }}
           # https://github.com/actions/upload-artifact/issues/92#issuecomment-711107236
           path: ${{ github.workspace }}/tests/bazel-testlogs*/**/test.log
