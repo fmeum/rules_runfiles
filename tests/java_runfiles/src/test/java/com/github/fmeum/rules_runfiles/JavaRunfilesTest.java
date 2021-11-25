@@ -17,6 +17,10 @@ package com.github.fmeum.rules_runfiles;
 import com.google.devtools.build.runfiles.Runfiles;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class JavaRunfilesTest {
   private static final String[] TESTCASES = new String[] {
@@ -63,6 +67,21 @@ public class JavaRunfilesTest {
     if (success) {
       return 0;
     } else {
+      System.err.println();
+      System.err.println("runfiles variables:");
+      for (Map.Entry<String, String> var : runfiles.getEnvVars().entrySet()) {
+        System.err.printf("%s=%s%n", var.getKey(), var.getValue());
+      }
+      String runfilesManifest = runfiles.getEnvVars().get("RUNFILES_MANIFEST_FILE");
+      if (runfilesManifest != null) {
+        System.err.println();
+        System.err.println("runfiles manifest:");
+        try (Stream<String> lines = Files.lines(Paths.get(runfilesManifest))) {
+          lines.forEach(System.err::println);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
       return 1;
     }
   }

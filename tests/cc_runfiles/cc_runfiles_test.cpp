@@ -65,6 +65,22 @@ int run_tests(Runfiles* runfiles) {
   if (success) {
     return EXIT_SUCCESS;
   } else {
+    std::cerr << std::endl << "runfiles variables:" << std::endl;
+    std::string runfiles_manifest_path;
+    for (const auto& var : runfiles->EnvVars()) {
+      std::cerr << var.first << "=" << var.second << std::endl;
+      if (var.first == "RUNFILES_MANIFEST_FILE") {
+        runfiles_manifest_path = var.second;
+      }
+    }
+    if (!runfiles_manifest_path.empty()) {
+      std::cerr << std::endl << "runfiles manifest:" << std::endl;
+      std::ifstream manifest(runfiles_manifest_path);
+      std::string line;
+      while (std::getline(manifest, line)) {
+        std::cerr << line << std::endl;
+      }
+    }
     return EXIT_FAILURE;
   }
 }
