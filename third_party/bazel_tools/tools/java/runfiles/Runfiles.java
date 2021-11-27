@@ -18,6 +18,7 @@
 //
 // Modifications:
 //   * Removed item 1 from the usage comment.
+//   * Added the changes of https://github.com/bazelbuild/bazel/pull/14335.
 
 package com.google.devtools.build.runfiles;
 
@@ -27,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -224,7 +226,21 @@ public abstract class Runfiles {
 
     @Override
     public String rlocationChecked(String path) {
-      return runfiles.get(path);
+      String exactMatch = runfiles.get(path);
+      if (exactMatch != null) {
+        return exactMatch;
+      }
+      // If path references a runfile that lies under a directory that itself is a runfile, then
+      // only the directory is listed in the manifest. Look up all prefixes of path in the manifest.
+      int prefixEnd = path.length();
+      while ((prefixEnd = path.lastIndexOf('/', prefixEnd - 1)) != -1) {
+        String prefixMatch = runfiles.get(path.substring(0, prefixEnd));
+        if (prefixMatch != null) {
+          String[] suffixPathSegments = path.substring(prefixEnd + 1).split("/");
+          return Paths.get(prefixMatch, suffixPathSegments).toString();
+        }
+      }
+      return null;
     }
 
     @Override

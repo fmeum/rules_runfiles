@@ -18,6 +18,7 @@
 //
 // Modifications:
 //   * Removed item 1 from the usage comment.
+//   * Added the changes of https://github.com/bazelbuild/bazel/pull/14335.
 
 #include "tools/cpp/runfiles/runfiles.h"
 
@@ -30,6 +31,7 @@
 #include <unistd.h>
 #endif  // _WIN32
 
+#include <algorithm>
 #include <fstream>
 #include <functional>
 #include <map>
@@ -52,6 +54,12 @@ using std::string;
 using std::vector;
 
 namespace {
+
+#ifdef _WIN32
+const char kPathSeparator = '\\';
+#else
+const char kPathSeparator = '/';
+#endif
 
 bool starts_with(const string& s, const char* prefix) {
   if (!prefix || !*prefix) {
@@ -203,9 +211,25 @@ string Runfiles::Rlocation(const string& path) const {
   if (IsAbsolute(path)) {
     return path;
   }
-  const auto value = runfiles_map_.find(path);
-  if (value != runfiles_map_.end()) {
-    return value->second;
+  const auto exact_match = runfiles_map_.find(path);
+  if (exact_match != runfiles_map_.end()) {
+    return exact_match->second;
+  }
+  if (!runfiles_map_.empty()) {
+    // If path references a runfile that lies under a directory that itself is a
+    // runfile, then only the directory is listed in the manifest. Look up all
+    // prefixes of path in the manifest.
+    std::size_t prefix_end = path.size();
+    while ((prefix_end = path.find_last_of('/', prefix_end - 1)) !=
+           string::npos) {
+      const string prefix = path.substr(0, prefix_end);
+      const auto prefix_match = runfiles_map_.find(prefix);
+      if (prefix_match != runfiles_map_.end()) {
+        string path_suffix = path.substr(prefix_end + 1);
+        std::replace(path_suffix.begin(), path_suffix.end(), '/', kPathSeparator);
+        return prefix_match->second + kPathSeparator + path_suffix;
+      }
+    }
   }
   if (!directory_.empty()) {
     return directory_ + "/" + path;
