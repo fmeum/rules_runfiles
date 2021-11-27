@@ -30,7 +30,7 @@ def escape(s):
         return "_" + escaped
     return escaped
 
-def merge_runfiles(ctx, targets):
+def make_default_info(ctx, targets):
     runfiles = ctx.runfiles()
     for t in targets:
         runfiles = runfiles.merge(ctx.runfiles(transitive_files = t[DefaultInfo].files))

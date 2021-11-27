@@ -13,7 +13,7 @@
 # limitations under the License.
 
 load("@bazel_tools//tools/jdk:toolchain_utils.bzl", "find_java_toolchain")
-load(":common.bzl", "camel_case_identifier", "escape", "merge_runfiles", "runfile_structs")
+load(":common.bzl", "camel_case_identifier", "escape", "make_default_info", "runfile_structs")
 
 DEFINITION_TEMPLATE = """
   /*
@@ -66,7 +66,7 @@ def _java_runfiles_impl(ctx):
     )
 
     return [
-        merge_runfiles(ctx, ctx.attr.data),
+        make_default_info(ctx, ctx.attr.data),
         java_common.merge([
             java_info,
             ctx.attr._runfiles_lib[JavaInfo],

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
-load(":common.bzl", "escape", "merge_runfiles", "runfile_structs")
+load(":common.bzl", "escape", "make_default_info", "runfile_structs")
 
 DEFINITION_TEMPLATE = """
 {open_namespaces}
@@ -75,7 +75,7 @@ def _cc_runfiles_impl(ctx):
     cc_info = CcInfo(compilation_context = compilation_context)
 
     return [
-        merge_runfiles(ctx, ctx.attr.data),
+        make_default_info(ctx, ctx.attr.data),
         cc_common.merge_cc_infos(
             direct_cc_infos = [
                 cc_info,
