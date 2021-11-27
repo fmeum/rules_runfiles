@@ -20,7 +20,6 @@
 #include <vector>
 
 #include "cc_runfiles/cc_runfiles_test_runfiles.h"
-#include "tools/cpp/runfiles/runfiles.h"
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 

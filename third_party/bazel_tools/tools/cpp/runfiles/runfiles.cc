@@ -18,9 +18,10 @@
 //
 // Modifications:
 //   * Removed item 1 from the usage comment.
+//   * Modified the include path of the corresponding header.
 //   * Added the changes of https://github.com/bazelbuild/bazel/pull/14335.
 
-#include "tools/cpp/runfiles/runfiles.h"
+#include "runfiles.h"
 
 #ifdef _WIN32
 #include <windows.h>
