@@ -36,8 +36,5 @@ java_test(
     srcs = ["JavaRunfilesTest.java"],
     main_class = "com.github.fmeum.rules_runfiles.JavaRunfilesTest",
     use_testrunner = False,
-    deps = [
-        ":java_runfiles_test_runfiles",
-        "@bazel_tools//tools/java/runfiles",
-    ],
+    deps = [":java_runfiles_test_runfiles"],
 )

@@ -67,7 +67,10 @@ def _java_runfiles_impl(ctx):
 
     return [
         merge_runfiles(ctx, ctx.attr.data),
-        java_info,
+        java_common.merge([
+            java_info,
+            ctx.attr._runfiles_lib[JavaInfo],
+        ]),
     ]
 
 _java_runfiles = rule(
@@ -79,6 +82,7 @@ _java_runfiles = rule(
         ),
         "raw_labels": attr.string_list(),
         "_java_toolchain": attr.label(default = "@bazel_tools//tools/jdk:current_java_toolchain"),
+        "_runfiles_lib": attr.label(default = "//third_party/bazel_tools/tools/java/runfiles"),
     },
     fragments = ["java"],
     provides = [JavaInfo],

@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 # C++ & Java
-find -name '*.cpp' -o -name '*.h' -o -name '*.java' | xargs clang-format-13 -i
+find -path ./third_party -prune -name '*.cpp' -o -name '*.h' -o -name '*.java'  | xargs clang-format-13 -i
 
 test --noincompatible_strict_action_env
 

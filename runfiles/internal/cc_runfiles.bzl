@@ -72,10 +72,16 @@ def _cc_runfiles_impl(ctx):
         cc_toolchain = cc_toolchain,
         public_hdrs = [header],
     )
+    cc_info = CcInfo(compilation_context = compilation_context)
 
     return [
         merge_runfiles(ctx, ctx.attr.data),
-        CcInfo(compilation_context = compilation_context),
+        cc_common.merge_cc_infos(
+            direct_cc_infos = [
+                cc_info,
+                ctx.attr._runfiles_lib[CcInfo],
+            ],
+        ),
     ]
 
 _cc_runfiles = rule(
@@ -87,6 +93,7 @@ _cc_runfiles = rule(
         ),
         "raw_labels": attr.string_list(),
         "_cc_toolchain": attr.label(default = Label("@bazel_tools//tools/cpp:current_cc_toolchain")),
+        "_runfiles_lib": attr.label(default = "//third_party/bazel_tools/tools/cpp/runfiles"),
     },
     fragments = ["cpp"],
     provides = [CcInfo],
