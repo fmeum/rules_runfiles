@@ -23,9 +23,12 @@
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
+using namespace ::runfiles::current;
+using ::runfiles::main::BUILD_bazel;
+
 std::vector<std::string> testcases = {
     ::runfiles::current::data::foo::a_txt,
-    ::runfiles::current::data::foo::bar,
+    data::foo::bar,
     ::runfiles::current::data::foo::bar_b_txt,
     ::runfiles::current::cc_runfiles::filegroup_other_module,
     ::runfiles::current::cc_runfiles::filegroup_other_repo,
@@ -36,7 +39,7 @@ std::vector<std::string> testcases = {
     ::runfiles::custom_repo_name::data::foo::a_txt,
     ::runfiles::custom_repo_name::data::foo::bar,
     ::runfiles::custom_repo_name::data::foo::bar_b_txt,
-    ::runfiles::main::BUILD_bazel,
+    BUILD_bazel,
 };
 
 bool assert_valid_runfile(Runfiles* runfiles,
