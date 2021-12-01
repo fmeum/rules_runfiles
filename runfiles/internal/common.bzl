@@ -82,12 +82,17 @@ def _runfile_struct(ctx, target, raw_label):
             files = "\n  ".join([rlocation_path(ctx, file) for file in files]),
         ))
     file = files[0]
-    parsed_label = parse_label(raw_label, "current", ctx.label.package)
+    parsed_label = parse_label(raw_label, "current_repo", ctx.label.package)
+    repo = parsed_label.repo
+    pkg = parsed_label.pkg
+    name = parsed_label.name
+    if not repo:
+        repo = "main_repo"
     return struct(
-        name = parsed_label.name,
-        pkg = parsed_label.pkg,
+        name = name,
+        pkg = pkg,
         raw_label = raw_label,
-        repo = parsed_label.repo if parsed_label.repo else "main",
+        repo = repo,
         rlocation_path = rlocation_path(ctx, file),
         remapped_label = target.label,
     )

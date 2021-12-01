@@ -14,9 +14,9 @@
 
 package com.github.fmeum.rules_runfiles;
 
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current.data.foo.bar_b_txt;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current.java_runfiles.src.test.java.com.github.fmeum.rules_runfiles;
+import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo;
+import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo.data.foo.bar_b_txt;
+import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo.java_runfiles.src.test.java.com.github.fmeum.rules_runfiles;
 import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.custom_repo_name;
 
 import com.google.devtools.build.runfiles.Runfiles;
@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 
 public class JavaRunfilesTest {
   private static final String[] TESTCASES = new String[] {
-      JavaRunfilesTestRunfiles.current.data.foo.a_txt,
-      current.data.foo.bar,
+      JavaRunfilesTestRunfiles.current_repo.data.foo.a_txt,
+      current_repo.data.foo.bar,
       bar_b_txt,
       rules_runfiles.filegroup_other_module,
       rules_runfiles.filegroup_other_repo,
@@ -41,7 +41,7 @@ public class JavaRunfilesTest {
       custom_repo_name.data.foo.a_txt,
       custom_repo_name.data.foo.bar,
       custom_repo_name.data.foo.bar_b_txt,
-      JavaRunfilesTestRunfiles.main.BUILD_bazel,
+      JavaRunfilesTestRunfiles.main_repo.BUILD_bazel,
   };
 
   private static boolean assertValidRunfile(Runfiles runfiles, String rlocationPath) {

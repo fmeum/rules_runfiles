@@ -23,16 +23,16 @@
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
-using namespace ::runfiles::current;
-using ::runfiles::main::BUILD_bazel;
+using namespace ::runfiles::current_repo;
+using ::runfiles::main_repo::BUILD_bazel;
 
 std::vector<std::string> testcases = {
-    ::runfiles::current::data::foo::a_txt,
+    ::runfiles::current_repo::data::foo::a_txt,
     data::foo::bar,
-    ::runfiles::current::data::foo::bar_b_txt,
-    ::runfiles::current::cc_runfiles::filegroup_other_module,
-    ::runfiles::current::cc_runfiles::filegroup_other_repo,
-    ::runfiles::current::cc_runfiles::filegroup_same_module,
+    ::runfiles::current_repo::data::foo::bar_b_txt,
+    ::runfiles::current_repo::cc_runfiles::filegroup_other_module,
+    ::runfiles::current_repo::cc_runfiles::filegroup_other_repo,
+    ::runfiles::current_repo::cc_runfiles::filegroup_same_module,
     ::runfiles::custom_module_name::data::foo::a_txt,
     ::runfiles::custom_module_name::data::foo::bar,
     ::runfiles::custom_module_name::data::foo::bar_b_txt,
