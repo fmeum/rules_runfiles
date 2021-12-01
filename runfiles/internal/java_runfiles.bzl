@@ -51,6 +51,7 @@ def _java_runfiles_impl(ctx):
         begin_group = _begin_inner_class,
         end_group = _end_inner_class,
         emit = _emit,
+        indent_per_level = 2,
     )
 
     class_name = camel_case_identifier(ctx.attr.name)

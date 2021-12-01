@@ -14,7 +14,7 @@
 
 load(":common.bzl", "escape")
 
-def generate_nested_structure(runfile_structs, begin_group, end_group, emit):
+def generate_nested_structure(runfile_structs, begin_group, end_group, emit, indent_per_level = 0):
     runfiles_per_path = {}
     for runfile in runfile_structs:
         segments = [runfile.repo] + (runfile.pkg.split("/") if runfile.pkg else [])
@@ -35,10 +35,14 @@ def generate_nested_structure(runfile_structs, begin_group, end_group, emit):
         mismatch_pos = _mismatch(previous_segments, segments)
         if mismatch_pos != -1:
             for pos in range(len(previous_segments) - 1, mismatch_pos - 1, -1):
-                code.append(end_group(previous_segments[pos]))
+                code.append(_indent(end_group(previous_segments[pos]), indent_per_level * pos))
             for pos in range(mismatch_pos, len(segments)):
-                code.append(begin_group(segments[pos]))
-        code.append("\n\n".join([emit(runfile) for runfile in runfiles_per_path[segments]]))
+                code.append(_indent(begin_group(segments[pos]), indent_per_level * pos))
+        definitions = []
+        for runfile in runfiles_per_path[segments]:
+            definitions.append(_indent(emit(runfile), indent_per_level * len(segments)))
+        if definitions:
+            code.append("\n\n".join(definitions))
         previous_segments = segments
 
     return "\n".join(code)
@@ -52,3 +56,9 @@ def _mismatch(l1, l2):
         return -1
     else:
         return min_length
+
+def _indent(s, level):
+    if level == 0:
+        return s
+    indent = level * " "
+    return "\n".join([indent + line for line in s.split("\n")])
