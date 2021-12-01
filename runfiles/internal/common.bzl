@@ -24,6 +24,13 @@ Either use an existing more fine-grained target or use a rule such as
 bazel-skylib's select_file to extract a single file from this target.
 """
 
+def camel_case_identifier(s):
+    escaped = escape(s)
+    identifier = "".join([part[0].upper() + part[1:] for part in escaped.split("_") if part != ""])
+    if identifier and not identifier[0].isdigit():
+        return identifier
+    return "P" + identifier
+
 def escape(s):
     escaped = "".join([_escape_char(c) for c in s.elems()])
     if not escaped or escaped[0].isdigit():
@@ -62,13 +69,6 @@ def parse_label(label, current_repo, current_pkg):
 
 def runfile_structs(ctx, targets, raw_labels):
     return [_runfile_struct(ctx, target, raw_label) for target, raw_label in zip(targets, raw_labels)]
-
-def camel_case_identifier(s):
-    escaped = escape(s)
-    identifier = "".join([part[0].upper() + part[1:] for part in escaped.split("_") if part != ""])
-    if identifier and not identifier[0].isdigit():
-        return identifier
-    return "P" + identifier
 
 def _runfile_struct(ctx, target, raw_label):
     files = target[DefaultInfo].files.to_list()
