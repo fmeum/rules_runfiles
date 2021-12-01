@@ -14,9 +14,9 @@
 
 package com.github.fmeum.rules_runfiles;
 
+import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_pkg;
 import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo;
 import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo.data.foo.bar_b_txt;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo.java_runfiles.src.test.java.com.github.fmeum.rules_runfiles;
 import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.custom_repo_name;
 
 import com.google.devtools.build.runfiles.Runfiles;
@@ -32,9 +32,9 @@ public class JavaRunfilesTest {
       JavaRunfilesTestRunfiles.current_repo.data.foo.a_txt,
       current_repo.data.foo.bar,
       bar_b_txt,
-      rules_runfiles.filegroup_other_module,
-      rules_runfiles.filegroup_other_repo,
-      rules_runfiles.filegroup_same_module,
+      JavaRunfilesTestRunfiles.current_pkg.filegroup_other_module,
+      current_pkg.filegroup_other_repo,
+      current_pkg.filegroup_same_module,
       JavaRunfilesTestRunfiles.custom_module_name.data.foo.a_txt,
       JavaRunfilesTestRunfiles.custom_module_name.data.foo.bar,
       JavaRunfilesTestRunfiles.custom_module_name.data.foo.bar_b_txt,

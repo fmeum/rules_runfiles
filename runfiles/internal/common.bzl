@@ -86,6 +86,10 @@ def _runfile_struct(ctx, target, raw_label):
     repo = parsed_label.repo
     pkg = parsed_label.pkg
     name = parsed_label.name
+    if repo == "current_repo" and pkg == ctx.label.package:
+        # Reference :foo as if it were @current_pkg//:foo.
+        repo = "current_pkg"
+        pkg = ""
     if not repo:
         repo = "main_repo"
     return struct(
