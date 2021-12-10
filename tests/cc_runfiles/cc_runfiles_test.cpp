@@ -28,6 +28,8 @@ using ::runfiles::main_repo::BUILD_bazel;
 
 std::vector<std::string> testcases = {
     ::runfiles::current_repo::data::foo::a_txt,
+    // Made available without the ::runfiles::current_repo prefix by
+    // using namespace ::runfiles::current_repo;
     data::foo::bar,
     ::runfiles::current_repo::data::foo::bar_b_txt,
     ::runfiles::current_pkg::filegroup_other_module,
@@ -39,6 +41,8 @@ std::vector<std::string> testcases = {
     ::runfiles::custom_repo_name::data::foo::a_txt,
     ::runfiles::custom_repo_name::data::foo::bar,
     ::runfiles::custom_repo_name::data::foo::bar_b_txt,
+    // Made available without a namespace prefix by
+    // using ::runfiles::main_repo::BUILD_bazel;
     BUILD_bazel,
 };
 

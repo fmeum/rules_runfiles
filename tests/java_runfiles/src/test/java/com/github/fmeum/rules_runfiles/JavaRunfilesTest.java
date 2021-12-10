@@ -30,7 +30,10 @@ import java.util.stream.Stream;
 public class JavaRunfilesTest {
   private static final String[] TESTCASES = new String[] {
       JavaRunfilesTestRunfiles.current_repo.data.foo.a_txt,
+      // Static imports can be applied at any level, for example to access
+      // current_repo directly.
       current_repo.data.foo.bar,
+      // Static imports can be applied even to individual files.
       bar_b_txt,
       JavaRunfilesTestRunfiles.current_pkg.filegroup_other_module,
       current_pkg.filegroup_other_repo,
