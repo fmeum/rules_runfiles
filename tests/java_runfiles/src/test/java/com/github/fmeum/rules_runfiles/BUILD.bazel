@@ -23,12 +23,18 @@ filegroup(
 )
 
 java_runfiles(
+    name = "java_runfiles_test_common_runfiles",
+    data = COMMON_DATA,
+    package = "runfiles",
+)
+
+java_runfiles(
     name = "java_runfiles_test_runfiles",
     data = [
         "filegroup_other_repo",
         ":filegroup_other_module",
         ":filegroup_same_module",
-    ] + COMMON_DATA,
+    ],
 )
 
 java_test(
@@ -36,5 +42,8 @@ java_test(
     srcs = ["JavaRunfilesTest.java"],
     main_class = "com.github.fmeum.rules_runfiles.JavaRunfilesTest",
     use_testrunner = False,
-    deps = [":java_runfiles_test_runfiles"],
+    deps = [
+        ":java_runfiles_test_common_runfiles",
+        ":java_runfiles_test_runfiles",
+    ],
 )

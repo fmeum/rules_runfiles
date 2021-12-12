@@ -15,11 +15,13 @@
 package com.github.fmeum.rules_runfiles;
 
 import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_pkg;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.current_repo.data.foo.bar_b_txt;
-import static com.github.fmeum.rules_runfiles.JavaRunfilesTestRunfiles.custom_repo_name;
+import static runfiles.JavaRunfilesTestCommonRunfiles.current_repo;
+import static runfiles.JavaRunfilesTestCommonRunfiles.current_repo.data.foo.bar_b_txt;
+import static runfiles.JavaRunfilesTestCommonRunfiles.custom_repo_name;
 
 import com.google.devtools.build.runfiles.Runfiles;
+import runfiles.JavaRunfilesTestCommonRunfiles;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,22 +31,24 @@ import java.util.stream.Stream;
 
 public class JavaRunfilesTest {
   private static final String[] TESTCASES = new String[] {
-      JavaRunfilesTestRunfiles.current_repo.data.foo.a_txt,
+      JavaRunfilesTestCommonRunfiles.current_repo.data.foo.a_txt,
       // Static imports can be applied at any level, for example to access
       // current_repo directly.
       current_repo.data.foo.bar,
       // Static imports can be applied even to individual files.
       bar_b_txt,
+      // Multiple java_runfiles targets can be added to deps as every one has a
+      // unique class name.
       JavaRunfilesTestRunfiles.current_pkg.filegroup_other_module,
       current_pkg.filegroup_other_repo,
       current_pkg.filegroup_same_module,
-      JavaRunfilesTestRunfiles.custom_module_name.data.foo.a_txt,
-      JavaRunfilesTestRunfiles.custom_module_name.data.foo.bar,
-      JavaRunfilesTestRunfiles.custom_module_name.data.foo.bar_b_txt,
+      JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.a_txt,
+      JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.bar,
+      JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.bar_b_txt,
       custom_repo_name.data.foo.a_txt,
       custom_repo_name.data.foo.bar,
       custom_repo_name.data.foo.bar_b_txt,
-      JavaRunfilesTestRunfiles.main_repo.BUILD_bazel,
+      JavaRunfilesTestCommonRunfiles.main_repo.BUILD_bazel,
   };
 
   private static boolean assertValidRunfile(Runfiles runfiles, String rlocationPath) {

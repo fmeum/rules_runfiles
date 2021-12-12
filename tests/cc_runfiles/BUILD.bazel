@@ -23,16 +23,24 @@ filegroup(
 )
 
 cc_runfiles(
+    name = "cc_runfiles_test_common_runfiles",
+    data = COMMON_DATA,
+)
+
+cc_runfiles(
     name = "cc_runfiles_test_runfiles",
     data = [
         "filegroup_other_repo",
         ":filegroup_other_module",
         ":filegroup_same_module",
-    ] + COMMON_DATA,
+    ],
 )
 
 cc_test(
     name = "cc_runfiles_test",
     srcs = ["cc_runfiles_test.cpp"],
-    deps = [":cc_runfiles_test_runfiles"],
+    deps = [
+        ":cc_runfiles_test_common_runfiles",
+        ":cc_runfiles_test_runfiles",
+    ],
 )
