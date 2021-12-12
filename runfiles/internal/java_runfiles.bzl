@@ -72,12 +72,11 @@ def _java_runfiles_impl(ctx):
     java_info = java_common.compile(
         ctx,
         java_toolchain = java_toolchain,
+        # The JLS guarantees that constants are inlined. Since the generated code only contains
+        # constants, we can remove it from the runtime classpath.
+        neverlink = True,
         output = jar_file,
         source_files = [java_file],
-        javac_opts = [
-            # The generated code only contains constants and thus doesn't need debug info.
-            "-g:none",
-        ],
     )
 
     return [
