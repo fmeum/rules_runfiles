@@ -31,7 +31,8 @@ public final class {class_name} {{
 """
 
 def _begin_inner_class(segment):
-    return "public static final class %s {" % segment
+    return """public static final class %s {
+  private %s() {};""" % (segment, segment)
 
 def _end_inner_class(segment):
     return "}"
@@ -57,7 +58,7 @@ def _java_runfiles_impl(ctx):
     class_name = camel_case_identifier(ctx.attr.name)
     java_file_name = "%s.java" % class_name
     java_file = ctx.actions.declare_file(java_file_name)
-    java_package = _get_java_full_classname(ctx.label.package)
+    java_package = ctx.attr.package or _get_java_full_classname(ctx.label.package)
     ctx.actions.write(java_file, CLASS_TEMPLATE.format(
         class_name = class_name,
         content = content,
@@ -73,6 +74,10 @@ def _java_runfiles_impl(ctx):
         java_toolchain = java_toolchain,
         output = jar_file,
         source_files = [java_file],
+        javac_opts = [
+            # The generated code only contains constants and thus doesn't need debug info.
+            "-g:none",
+        ],
     )
 
     return [
@@ -90,6 +95,7 @@ _java_runfiles = rule(
             allow_files = True,
             mandatory = True,
         ),
+        "package": attr.string(),
         "raw_labels": attr.string_list(),
         "_java_toolchain": attr.label(default = "@bazel_tools//tools/jdk:current_java_toolchain"),
         "_runfiles_lib": attr.label(default = "//third_party/bazel_tools/tools/java/runfiles"),
@@ -98,10 +104,11 @@ _java_runfiles = rule(
     provides = [JavaInfo],
 )
 
-def java_runfiles(name, data, **kwargs):
+def java_runfiles(name, data, package = None, **kwargs):
     _java_runfiles(
         name = name,
         data = data,
+        package = package,
         raw_labels = data,
         visibility = ["//visibility:private"],
         **kwargs
