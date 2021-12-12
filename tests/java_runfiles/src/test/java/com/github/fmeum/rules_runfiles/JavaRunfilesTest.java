@@ -20,14 +20,13 @@ import static runfiles.JavaRunfilesTestCommonRunfiles.current_repo.data.foo.bar_
 import static runfiles.JavaRunfilesTestCommonRunfiles.custom_repo_name;
 
 import com.google.devtools.build.runfiles.Runfiles;
-import runfiles.JavaRunfilesTestCommonRunfiles;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Stream;
+import runfiles.JavaRunfilesTestCommonRunfiles;
 
 public class JavaRunfilesTest {
   private static final String[] TESTCASES = new String[] {

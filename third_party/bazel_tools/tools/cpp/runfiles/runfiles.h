@@ -17,14 +17,12 @@
 // https://github.com/bazelbuild/bazel/blob/37710728712e00e8bd7145662668d72591204146/tools/cpp/runfiles/runfiles_src.h
 //
 // Modifications:
-//   * Changed the include path and removed a comment.
+//   * Changed the include path and modified the usage comment.
 
 // Runfiles lookup library for Bazel-built C++ binaries and tests.
 //
 // USAGE:
-// 1.  Include the runfiles library.
-//
-//       #include "tools/cpp/runfiles/runfiles.h"
+// 1.  Optionally import the runfiles library namespace.
 //
 //       using bazel::tools::cpp::runfiles::Runfiles;
 //
