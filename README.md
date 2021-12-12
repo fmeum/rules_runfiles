@@ -80,9 +80,10 @@ included via
 #include "path/to/pkg/foo_runfiles.h"
 ```
 
-This file defines a string constant for every label in the `data` attribute of the `cc_runfiles` rule. When deriving the
-name of a constant, Bazel packages map to C++ namespaces and non-alphanumeric characters are replaced by underscores.
-There are also special namespaces for the current package, the current repository and the main repository.
+This file contains a string constant for every label in the `data` attribute of the `cc_runfiles` rule, organized in
+namespaces. When deriving the fully-qualified name of a constant, Bazel repositories and packages map to namespaces and
+non-alphanumeric characters are replaced by underscores. There are also special namespaces for the current package, the
+current repository and the main repository.
 
 | Bazel label                | C++ constant                                   |
 |----------------------------|------------------------------------------------|
@@ -92,9 +93,27 @@ There are also special namespaces for the current package, the current repositor
 | `@foobar//path/to/pkg:foo` | `::runfiles::foobar::path::to::pkg::foo`       |
 | `@//path/to/pkg:foo`       | `::runfiles::main_repo::path::to::pkg::foo`    |
 
-The fully qualified names of these constants can be shortened with `using` and `using namespace` directives.
+The fully-qualified names of these constants can be shortened with `using` and `using namespace` directives.
 
-**Java**:
+**Java**: A `java_runfiles` target with `name = "foo_runfiles"` provides a generated class `FooRunfiles` (name converted
+to CamelCase with special characters replaced with underscores). By default, this class is contained in a package
+determined from the containing Bazel package by the same rules as `java_binary`'s `main_class`. It can be overriden with
+the `package` attribute on `java_runfiles`.
+
+This class contains a `String` constant for every label in the `data` attribute of the `java_runfiles` rule, organized
+in nested classes. When deriving the fully-qualified name of a constant, Bazel repositories and packages map to nested
+classes and non-alphanumeric characters are replaced by underscores. There are also special nested classes for the
+current package, the current repository and the main repository.
+
+| Bazel label                | Java constant                                   |
+|----------------------------|-------------------------------------------------|
+| `:foo`                     | `FooRunfiles.current_pkg.foo`                   |
+| `:dir/some-File.txt`       | `FooRunfiles.current_pkg.dir_some_File_txt`     |
+| `//path/to/pkg:foo`        | `FooRunfiles.current_repo.path.to.pkg.foo`      |
+| `@foobar//path/to/pkg:foo` | `FooRunfiles.foobar.path.to.pkg.foo`            |
+| `@//path/to/pkg:foo`       | `FooRunfiles.main_repo.path.to.pkg.foo`         |
+
+The fully-qualified names of these constants can be shortened with `import static` directives.
 
 ### Step 3: Using the Bazel runfiles libraries
 
