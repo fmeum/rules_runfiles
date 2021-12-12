@@ -103,6 +103,7 @@ def java_runfiles(name, data, **kwargs):
         name = name,
         data = data,
         raw_labels = data,
+        visibility = ["//visibility:private"],
         **kwargs
     )
 
