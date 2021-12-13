@@ -17,6 +17,7 @@ COMMON_DATA = [
     "//data/foo:bar",
     "//data/foo:bar/b.txt",
     "@//:BUILD.bazel",
+    "@custom_module_name//custom_module_name",
     "@custom_module_name//data/foo:a.txt",
     "@custom_module_name//data/foo:bar",
     "@custom_module_name//data/foo:bar/b.txt",

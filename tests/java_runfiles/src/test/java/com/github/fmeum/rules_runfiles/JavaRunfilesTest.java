@@ -41,6 +41,9 @@ public class JavaRunfilesTest {
       JavaRunfilesTestRunfiles.current_pkg.filegroup_other_module,
       current_pkg.filegroup_other_repo,
       current_pkg.filegroup_same_module,
+      // This is only here to prove that there are no collisions between repo, package and file
+      // names.
+      JavaRunfilesTestCommonRunfiles.custom_module_name.custom_module_name.custom_module_name,
       JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.a_txt,
       JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.bar,
       JavaRunfilesTestCommonRunfiles.custom_module_name.data.foo.bar_b_txt,

@@ -36,6 +36,8 @@ std::vector<std::string> testcases = {
     ::runfiles::current_pkg::filegroup_other_module,
     ::runfiles::current_pkg::filegroup_other_repo,
     ::runfiles::current_pkg::filegroup_same_module,
+    // This is only here to prove that there are no collisions between repo, package and file names.
+    ::runfiles::custom_module_name::custom_module_name::custom_module_name,
     ::runfiles::custom_module_name::data::foo::a_txt,
     ::runfiles::custom_module_name::data::foo::bar,
     ::runfiles::custom_module_name::data::foo::bar_b_txt,

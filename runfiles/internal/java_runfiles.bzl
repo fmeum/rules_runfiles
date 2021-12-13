@@ -69,7 +69,7 @@ def _java_runfiles_impl(ctx):
     jar_file = ctx.actions.declare_file(jar_file_name)
 
     java_toolchain = find_java_toolchain(ctx, ctx.attr._java_toolchain)
-    java_info = java_common.compile(
+    full_java_info = java_common.compile(
         ctx,
         java_toolchain = java_toolchain,
         # The JLS (§13.1) guarantees that constants are inlined. Since the generated code only
@@ -77,6 +77,18 @@ def _java_runfiles_impl(ctx):
         neverlink = True,
         output = jar_file,
         source_files = [java_file],
+    )
+
+    # Do not expose the full compile jar so that regular javac is never invoked. The compilation is
+    # fully handled by turbine. This is
+    # * sufficient since the generated code exports no methods in its public interface;
+    # * necessary since javac would complain about nested classes having the same name as an
+    #   enclosing class, but turbine and the JVM don't.
+    hjar_file = full_java_info.compile_jars.to_list()[0]
+    java_info = JavaInfo(
+        output_jar = hjar_file,
+        compile_jar = hjar_file,
+        neverlink = True,
     )
 
     return [
