@@ -6,9 +6,10 @@ Runfiles are usually declared using the `data` attribute and are automatically p
 How a binary can find its runfiles at runtime depends on the OS: While Bazel uses a tree of symlinks on Unix systems, it
 usually falls back to a manifest file on Windows. Thus, the recommended way to look up runfiles is through the runfiles
 libraries provided for all major languages under `@bazel_tools//tools/<lang>/runfiles`
-or `@rules_<lang>//<lang>/runfiles`.
+or `@rules_<lang>//<lang>/runfiles`. These libraries all offer an `rlocation` function that maps the runfiles path of a
+file, which is of the form `repository/path/to/pkg/filename`, to the actual location of the file at runtime.
 
-This ruleset offers a convenient wrapper around these libraries that has the following advantages over using the
+This ruleset offers a convenient wrapper around the runfiles libraries that has the following advantages over using the
 libraries directly:
 
 * **Compile-time safety**:
