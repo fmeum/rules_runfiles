@@ -1,0 +1,6 @@
+bazel-bin
+bazel-out
+bazel-testlogs
+bazel-tests
+data/other_module
+data/other_repo

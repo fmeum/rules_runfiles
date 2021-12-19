@@ -1,0 +1,5 @@
+bazel-*
+.bazelversion
+.ijwb
+.clwb
+.idea

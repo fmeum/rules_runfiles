@@ -1,0 +1,20 @@
+module(
+    name = "fmeum_rules_runfiles",
+    version = "0.1.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "platforms", version = "0.0.4", dev_dependency = True)
+bazel_dep(name = "bazel_skylib", version = "1.0.3", dev_dependency = True)
+
+install_dev_dependencies = use_extension(
+    "@fmeum_rules_runfiles//bzlmod:dev_extensions.bzl",
+    "install_dev_dependencies",
+    dev_dependency = True,
+)
+use_repo(
+    install_dev_dependencies,
+    "fmeum_rules_runfiles_tests",
+    custom_module_name = "other_module",
+    custom_repo_name = "other_repo",
+)

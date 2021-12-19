@@ -1,0 +1,68 @@
+name: Test externally
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+
+  test_externally:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        bazel: [4.2.2, 5.0.0rc3, last_green]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        bazel_mode: [workspace, module]
+        include:
+          - os: ubuntu-latest
+            cache: "/home/runner/.cache/bazel-disk"
+          - os: macos-latest
+            cache: "/private/var/tmp/bazel-disk"
+          - os: windows-latest
+            cache: "C:\\tmp\\bazel-disk"
+          - bazel_mode: module
+            bazel_extra_args: "--config=bzlmod"
+        exclude:
+          - bazel: 4.2.2
+            bazel_mode: module
+    name: Test externally (${{ matrix.os }}, Bazel ${{ matrix.bazel }} ${{ matrix.bazel_mode }})
+    env:
+      BAZELISK_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Mount Bazel disk cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ matrix.cache }}
+          key: bazel-disk-cache-${{ matrix.bazel }}-${{ matrix.os }}-${{ matrix.bazel_mode }}
+
+      - name: Clear WORKSPACE
+        if: matrix.bazel_mode == 'module'
+        working-directory: ./tests
+        run: echo "" > WORKSPACE
+
+      - name: Build externally
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+        working-directory: ./tests
+        run: bazelisk build --disk_cache=${{ matrix.cache }} ${{ matrix.bazel_extra_args }} //...
+
+      - name: Run tests externally
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+        working-directory: ./tests
+        run: bazelisk test --disk_cache=${{ matrix.cache }} ${{ matrix.bazel_extra_args }} //...
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: testlogs-external-${{ matrix.bazel}}-${{ matrix.bazel_mode }}-${{ matrix.os }}
+          # https://github.com/actions/upload-artifact/issues/92#issuecomment-711107236
+          path: ${{ github.workspace }}/tests/bazel-testlogs*/**/test.log

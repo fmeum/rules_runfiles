@@ -1,0 +1,2 @@
+# Visible for testing.
+exports_files(["BUILD.bazel"])

@@ -1,0 +1,46 @@
+load("@fmeum_rules_runfiles//runfiles:cc_defs.bzl", "cc_runfiles")
+load("//data:constants.bzl", "COMMON_DATA")
+
+filegroup(
+    name = "filegroup_same_module",
+    srcs = [
+        "//data/foo:a.txt",
+    ],
+)
+
+filegroup(
+    name = "filegroup_other_module",
+    srcs = [
+        "@custom_module_name//data/foo:a.txt",
+    ],
+)
+
+filegroup(
+    name = "filegroup_other_repo",
+    srcs = [
+        "@custom_repo_name//data/foo:a.txt",
+    ],
+)
+
+cc_runfiles(
+    name = "cc_runfiles_test_common_runfiles",
+    data = COMMON_DATA,
+)
+
+cc_runfiles(
+    name = "cc_runfiles_test_runfiles",
+    data = [
+        "filegroup_other_repo",
+        ":filegroup_other_module",
+        ":filegroup_same_module",
+    ],
+)
+
+cc_test(
+    name = "cc_runfiles_test",
+    srcs = ["cc_runfiles_test.cpp"],
+    deps = [
+        ":cc_runfiles_test_common_runfiles",
+        ":cc_runfiles_test_runfiles",
+    ],
+)
