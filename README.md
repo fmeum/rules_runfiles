@@ -45,9 +45,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "fmeum_rules_runfiles",
-    sha256 = "",
+    sha256 = "697fd47dfa7215141c91791dbdea80ad762880d3735bb181008d7c1d4caf3880",
     strip_prefix = "rules_runfiles-0.1.0",
-    url = "https://github.com/fmeum/rules_runfiles/archive/v0.1.0.tar.gz",
+    url = "https://github.com/fmeum/rules_runfiles/archive/refs/tags/v0.1.0.tar.gz",
 )
 ```
 
