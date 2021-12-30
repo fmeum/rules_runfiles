@@ -20,6 +20,8 @@
 //   * Removed item 1 from the usage comment.
 //   * Modified the include path of the corresponding header.
 //   * Added the changes of https://github.com/bazelbuild/bazel/pull/14335.
+//   * Fixed https://github.com/bazelbuild/bazel/issues/14500 by reverting
+//     https://github.com/bazelbuild/bazel/commit/bfdfa6ebfd21b388f1c91f512291c848e1a92a96.
 
 #include "runfiles.h"
 
@@ -317,71 +319,45 @@ bool PathsFrom(const string& argv0, string mf, string dir,
   out_manifest->clear();
   out_directory->clear();
 
-  string existing_mf = mf;
-  string existing_dir = dir;
+  bool mfValid = is_runfiles_manifest(mf);
+  bool dirValid = is_runfiles_directory(dir);
 
-  // if argv0 is not empty, try to use it to find the runfiles manifest
-  // file/directory paths
-  if (!argv0.empty()) {
+  if (!argv0.empty() && !mfValid && !dirValid) {
     mf = argv0 + ".runfiles/MANIFEST";
     dir = argv0 + ".runfiles";
-    if (!is_runfiles_manifest(mf)) {
+    mfValid = is_runfiles_manifest(mf);
+    dirValid = is_runfiles_directory(dir);
+    if (!mfValid) {
       mf = argv0 + ".runfiles_manifest";
+      mfValid = is_runfiles_manifest(mf);
     }
-    PathsFrom(mf, dir, is_runfiles_manifest, is_runfiles_directory,
-              out_manifest, out_directory);
   }
 
-  // if the runfiles manifest file/directory paths are not found, use existing
-  // mf and dir to find the paths
-  if (out_manifest->empty() && out_directory->empty()) {
-    return PathsFrom(existing_mf, existing_dir, is_runfiles_manifest,
-                     is_runfiles_directory, out_manifest, out_directory);
-  }
-
-  return true;
-}
-
-bool PathsFrom(const std::string& runfiles_manifest,
-               const std::string& runfiles_directory,
-               function<bool(const std::string&)> is_runfiles_manifest,
-               function<bool(const std::string&)> is_runfiles_directory,
-               std::string* out_manifest, std::string* out_directory) {
-  out_manifest->clear();
-  out_directory->clear();
-
-
-  std::string mf = runfiles_manifest;
-  std::string dir = runfiles_directory;
-
-  bool mf_valid = is_runfiles_manifest(mf);
-  bool dir_valid = is_runfiles_directory(dir);
-
-  if (!mf_valid && !dir_valid) {
+  if (!mfValid && !dirValid) {
     return false;
   }
 
-  if (!mf_valid) {
+  if (!mfValid) {
     mf = dir + "/MANIFEST";
-    mf_valid = is_runfiles_manifest(mf);
-    if (!mf_valid) {
+    mfValid = is_runfiles_manifest(mf);
+    if (!mfValid) {
       mf = dir + "_manifest";
-      mf_valid = is_runfiles_manifest(mf);
+      mfValid = is_runfiles_manifest(mf);
     }
   }
 
-  if (!dir_valid &&
+  if (!dirValid &&
       (ends_with(mf, ".runfiles_manifest") || ends_with(mf, "/MANIFEST"))) {
     static const size_t kSubstrLen = 9;  // "_manifest" or "/MANIFEST"
     dir = mf.substr(0, mf.size() - kSubstrLen);
-    dir_valid = is_runfiles_directory(dir);
+    dirValid = is_runfiles_directory(dir);
   }
 
-  if (mf_valid) {
+  if (mfValid) {
     *out_manifest = mf;
   }
 
-  if (dir_valid) {
+  if (dirValid) {
     *out_directory = dir;
   }
 
