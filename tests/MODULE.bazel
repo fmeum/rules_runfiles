@@ -1,17 +1,20 @@
 module(
     name = "fmeum_rules_runfiles_tests",
-    version = "0.1.0",
     compatibility_level = 1,
+    version = "0.1.0",
 )
 
 bazel_dep(name = "platforms", version = "0.0.4")
 bazel_dep(name = "bazel_skylib", version = "1.0.3")
 bazel_dep(name = "fmeum_rules_runfiles", version = "0.1.0")
+
 local_path_override(
     module_name = "fmeum_rules_runfiles",
     path = "..",
 )
-bazel_dep(name = "other_module", version = "0.0.1", repo_name = "custom_module_name")
+
+bazel_dep(name = "other_module", repo_name = "custom_module_name", version = "0.0.1")
+
 local_path_override(
     module_name = "other_module",
     path = "data/other_module",
@@ -21,6 +24,7 @@ install_dev_dependencies = use_extension(
     "@fmeum_rules_runfiles_tests//bzlmod:dev_extensions.bzl",
     "install_dev_dependencies",
 )
+
 use_repo(
     install_dev_dependencies,
     custom_repo_name = "other_repo",
