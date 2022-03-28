@@ -88,13 +88,13 @@ Note:
   as [bazel-skylib's `select_file`](https://github.com/bazelbuild/bazel-skylib/blob/6e30a77347071ab22ce346b6d20cf8912919f644/rules/select_file.bzl#L39)
   can be used to break up targets into individual files.
 * The `data` dependencies should not be repeated on the `<lang>_binary` or `<lang>_library` target.
-* The `<lang>_binary` or `<lang>_library` target should not depend on the Bazel-provided runfiles libraries. It will
-  already have access to [slightly improved](https://github.com/bazelbuild/bazel/issues/14336) versions of these
-  libraries through the dependency on `foo_runfiles`.
 * `<lang>_runfiles` targets are only visible from the package in which they are defined. Since they contain generated
   code that refers to the "current package", exposing them to other packages would lead to very confusing situations. If
   there is a larger list of data dependencies shared between multiple targets in different packages, consider exporting
   the list via a Starlark constant in a `.bzl` file instead.
+* Use of Bazel 5.1.0 or higher is recommended as lower versions of Bazel include runfiles libraries that do not always
+  find runfiles contained in directories that are themselves runfiles when using a manifest
+  (https://github.com/bazelbuild/bazel/issues/14336).
 
 ### Step 2: Accessing the runfiles constants
 
@@ -144,11 +144,11 @@ The fully-qualified names of these constants can be shortened with `import stati
 
 **C++**:
 No additional dependency or include is needed to access the Bazel C++ runfiles library.
-See [its main header](third_party/bazel_tools/tools/cpp/runfiles/runfiles.h) for usage instructions.
+See [its main header](https://github.com/bazelbuild/bazel/tree/master/tools/cpp/runfiles/runfiles_src.h) for usage instructions.
 
 **Java**:
 No additional dependency is needed to access the Bazel Java runfiles library.
-See [its main source file](third_party/bazel_tools/tools/java/runfiles/Runfiles.java) for usage instructions.
+See [its main source file](https://github.com/bazelbuild/bazel/tree/master/tools/java/runfiles/Runfiles.java) for usage instructions.
 
 ## Examples
 

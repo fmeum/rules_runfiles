@@ -109,7 +109,7 @@ _java_runfiles = rule(
         "package": attr.string(),
         "raw_labels": attr.string_list(),
         "_java_toolchain": attr.label(default = "@bazel_tools//tools/jdk:current_java_toolchain"),
-        "_runfiles_lib": attr.label(default = "//third_party/bazel_tools/tools/java/runfiles"),
+        "_runfiles_lib": attr.label(default = "@bazel_tools//tools/java/runfiles"),
     },
     fragments = ["java"],
     provides = [JavaInfo],
