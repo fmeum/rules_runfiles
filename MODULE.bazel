@@ -1,11 +1,11 @@
 module(
     name = "fmeum_rules_runfiles",
     compatibility_level = 1,
-    version = "0.1.0",
+    version = "0.2.0",
 )
 
-bazel_dep(name = "platforms", dev_dependency = True, version = "0.0.4")
-bazel_dep(name = "bazel_skylib", dev_dependency = True, version = "1.0.3")
+bazel_dep(name = "platforms", dev_dependency = True, version = "0.0.5")
+bazel_dep(name = "bazel_skylib", dev_dependency = True, version = "1.3.0")
 
 install_dev_dependencies = use_extension(
     "@fmeum_rules_runfiles//bzlmod:dev_extensions.bzl",
